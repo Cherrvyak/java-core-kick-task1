@@ -1,6 +1,7 @@
 package com.innowise.ft.service.sort;
 
 import com.innowise.ft.entity.IntArray;
+import com.innowise.ft.service.ArraySortService;
 
 public class SelectionSort implements ArraySortService {
     @Override

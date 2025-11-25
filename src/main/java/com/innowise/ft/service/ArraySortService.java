@@ -1,4 +1,4 @@
-package com.innowise.ft.service.sort;
+package com.innowise.ft.service;
 
 import com.innowise.ft.entity.IntArray;
 

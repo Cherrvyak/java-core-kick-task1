@@ -2,15 +2,17 @@ package com.innowise.ft.test;
 
 import com.innowise.ft.entity.IntArray;
 import com.innowise.ft.exception.ArrayException;
-import com.innowise.ft.service.ArrayService;
-import com.innowise.ft.service.ArrayServiceImpl;
+import com.innowise.ft.service.FindCountPosNegService;
+import com.innowise.ft.service.FindMaxMinService;
+import com.innowise.ft.service.FindSumAverageService;
+import com.innowise.ft.service.ReplaceService;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 
 class ArrayTest {
 
-    private final ArrayService service = new ArrayServiceImpl();
+    private final FindSumAverageService service = new FindSumAverageServiceImpl();
 
     @Test
     void findSum_ShouldReturnCorrectSum() throws ArrayException {
