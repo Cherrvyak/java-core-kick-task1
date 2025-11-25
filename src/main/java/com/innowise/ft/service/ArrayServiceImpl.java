@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ArrayServiceImpl implements ArrayService {
-    private static final Logger logger = LogManager.getLogger(ArrayServiceImpl.class);
+    private static final Logger logger = LogManager.getLogger();
     @Override
     public int findMinValue(IntArray array) throws ArrayException {
         logger.info("Finding min for array: {}", array);
