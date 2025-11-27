@@ -1,58 +1,97 @@
 package com.innowise.ft.entity;
 
-import com.innowise.ft.exception.ArrayException;
+import com.innowise.ft.observer.ArrayObservable;
+import com.innowise.ft.observer.ArrayObserver;
 
-public class IntArray {
-    private int[] array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-    private IntArray() {
+public class IntArray implements ArrayObservable {
+
+    private long id;
+    private int[] data;
+    private List<ArrayObserver> observers = new ArrayList<>();
+
+    private IntArray(long id, int[] data) {
+        this.id = id;
+        this.data = data;
     }
 
-    public int[] getArray() {
-        return array;
+    public long getId() {
+        return id;
     }
 
-    public static Builder newBuilder() {
-        return new IntArray().new Builder();
+    public int[] getData() {
+        return Arrays.copyOf(data, data.length);
     }
 
-    public class Builder {
+    public void setElement(int index, int value) {
+        if (index >= 0 && index < data.length) {
+            this.data[index] = value;
+            notifyObservers();
+        }
+    }
 
-        private Builder() {
+    public void setData(int[] data) {
+        this.data = data;
+        notifyObservers();
+    }
+
+    @Override
+    public void attach(ArrayObserver observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void detach(ArrayObserver observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (ArrayObserver observer : observers) {
+            observer.handleEvent(this);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        IntArray intArray = (IntArray) o;
+        return id == intArray.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
+
+    @Override
+    public String toString() {
+        return "IntArray{" +
+          "id=" + id +
+          ", data=" + Arrays.toString(data) +
+          '}';
+    }
+
+    public static class Builder {
+        private long id;
+        private int[] data;
+
+        public Builder setId(long id) {
+            this.id = id;
+            return this;
         }
 
-        public Builder setArray(int[] array) {
-            IntArray.this.array = array;
-
+        public Builder setData(int[] data) {
+            this.data = data;
             return this;
         }
 
         public IntArray build() {
-            return IntArray.this;
+            return new IntArray(id, data);
         }
-
     }
-
-    public void setArray(int[] array) {
-        this.array = array != null ? array.clone() : new int[0];
-    }
-
-    public int getLength() {
-        return array != null ? array.length : 0;
-    }
-
-    public int getElement(int index) throws ArrayException {
-        if (array == null || index < 0 || index >= array.length) {
-            throw new ArrayException("Index " + index + " out of bounds");
-        }
-        return array[index];
-    }
-
-    public void setElement(int index, int value) throws ArrayException {
-        if (array == null || index < 0 || index >= array.length) {
-            throw new ArrayException("Index " + index + " out of bounds");
-        }
-        array[index] = value;
-    }
-
 }
